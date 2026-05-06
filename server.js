@@ -1,6 +1,7 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
+const path = require('path');
 require('dotenv').config();
 
 const app = express();
@@ -10,8 +11,8 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Serve static files
-app.use(express.static('.'));
+// Serve static files from current directory
+app.use(express.static(path.join(__dirname)));
 
 // Initialize SQLite Database
 const db = new sqlite3.Database(':memory:');
@@ -209,7 +210,7 @@ app.get('/api/orders/:id', (req, res) => {
 
 // Serve the main HTML file
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/Shopping.html');
+  res.sendFile(path.join(__dirname, 'Shopping.html'));
 });
 
 // Health check endpoint
